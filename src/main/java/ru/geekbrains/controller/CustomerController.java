@@ -1,6 +1,7 @@
 package ru.geekbrains.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -10,8 +11,11 @@ import ru.geekbrains.persistence.CategoryRepository;
 import ru.geekbrains.persistence.CustomerRepository;
 import ru.geekbrains.persistence.ProductRepository;
 import ru.geekbrains.persistence.entity.Category;
+import ru.geekbrains.persistence.entity.Customer;
 import ru.geekbrains.persistence.entity.Product;
 
+@Controller
+@RequestMapping("customers")
 public class CustomerController {
 
     private final ProductRepository productRepository;
@@ -25,17 +29,13 @@ public class CustomerController {
     }
 
     @RequestMapping(value = "buy", method = RequestMethod.GET)
-    public String buyProductFrom(@RequestParam("categoryId") Long productId, Model model) {
+    public String buyProductFrom(@RequestParam("categoryId") Long productId, Long customerId, Model model) {
         Product product = productRepository.findById(productId);
-        product.setCategory(category);
-        model.addAttribute("product", product);
-        return "product";
+        Customer customer = customerRepository.findById(customerId);
+        customer.addProduct(product);
+        model.addAttribute("customer", customer);
+        return "customer";
     }
 
-    @RequestMapping(value = "create", method = RequestMethod.POST)
-    public String createProduct(@ModelAttribute("product") Product product) {
-        product.setCategory(categoryRepository.findById(product.getCategoryId()));
-        productRepository.create(product);
-        return "redirect:/categories/edit?id=" + product.getCategory().getId();
-    }
+
 }
