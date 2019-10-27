@@ -17,7 +17,7 @@
     </p>
     <p>
         <label for="category">Category</label>
-        <input type="text" id="category" name="category" value="${product.category.name}" />
+        <input type="text" id="category" name="category" value="${product.category.name}" disabled />
     </p>
     <p>
         <label for="price">Price</label>
@@ -29,25 +29,6 @@
     </p>
     <input type="submit" />
 </form>
-
-<table border="1">
-    <tr>
-        <th>Id</th>
-        <th>Name</th>
-        <th>Description</th>
-        <th>Price</th>
-    </tr>
-
-    <c:forEach items="${products}" var="prod">
-        <tr>
-            <td>${prod.id}</td>
-            <td>${prod.name}</td>
-            <td>${prod.description}</td>
-            <td>${prod.price}</td>
-        </tr>
-    </c:forEach>
-
-</table>
 
 </body>
 </html>

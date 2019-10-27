@@ -49,30 +49,32 @@ public class CustomerController {
 
     @RequestMapping(value = "edit", method = RequestMethod.POST)
     public String editForm(@ModelAttribute("customer") Customer customer) {
-        customerRepository.update(customer);
+        customerRepository.save(customer);
         return "customer";
     }
 
     @RequestMapping(value = "create", method = RequestMethod.POST)
     public String createCategory(@ModelAttribute("customer") Customer customer) {
-        customerRepository.create(customer);
+        customerRepository.save(customer);
         return "redirect:/customers";
     }
 
     @RequestMapping(value = "buy", method = RequestMethod.GET)
     public String buyProductFrom(@RequestParam("productId") Long productId, @RequestParam("customerId") Long customerId,
                                  Model model) {
-        Product product = productRepository.findById(productId);
-        Customer customer = customerRepository.findById(customerId);
+        Product product = productRepository.findById(productId).
+                orElseThrow(() -> new IllegalStateException("Product not found"));
+        Customer customer = customerRepository.findById(customerId).
+                orElseThrow(() -> new IllegalStateException("Customer not found"));;
         customer.addProduct(product);
-        customerRepository.update(customer);
+        customerRepository.save(customer);
         model.addAttribute("customer", customer);
         return "customer";
     }
 
     @RequestMapping(value = "buy", method = RequestMethod.POST)
     public String buyProductFrom(@ModelAttribute("customer") Customer customer) {
-        customerRepository.update(customer);
+        customerRepository.save(customer);
         return "customer";
     }
 

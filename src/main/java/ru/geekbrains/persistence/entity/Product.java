@@ -24,8 +24,6 @@ public class Product {
     @JoinColumn(name = "category_id")
     private Category category;
 
-    // Нам пришлось добавить это поле, т.к. мы не можем передать целый класс Category как часть формы
-    // На следующем занятии разберем, как решить эту проблему
     @Transient
     private Long categoryId;
 

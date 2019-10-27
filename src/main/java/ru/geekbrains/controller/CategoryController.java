@@ -1,5 +1,6 @@
 package ru.geekbrains.controller;
 
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -9,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import ru.geekbrains.persistence.CategoryRepository;
 import ru.geekbrains.persistence.entity.Category;
+
 
 @Controller
 @RequestMapping("categories")
@@ -36,20 +38,22 @@ public class CategoryController {
 
     @RequestMapping(value = "edit", method = RequestMethod.GET)
     public String editForm(@RequestParam("id") Long id, Model model) {
-        model.addAttribute("category", categoryRepository.findById(id));
+        Category category = categoryRepository.findById(id)
+                .orElseThrow(() -> new IllegalStateException("Category not found"));
+        model.addAttribute("category", category);
         model.addAttribute("action", "edit");
         return "category";
     }
 
     @RequestMapping(value = "edit", method = RequestMethod.POST)
     public String editForm(@ModelAttribute("category") Category category) {
-        categoryRepository.update(category);
-        return "category";
+        categoryRepository.save(category);
+        return "redirect:/categories";
     }
 
     @RequestMapping(value = "create", method = RequestMethod.POST)
     public String createCategory(@ModelAttribute("category") Category category) {
-        categoryRepository.create(category);
+        categoryRepository.save(category);
         return "redirect:/categories";
     }
 }
