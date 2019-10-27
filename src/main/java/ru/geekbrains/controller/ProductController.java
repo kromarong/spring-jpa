@@ -26,6 +26,12 @@ public class ProductController {
         this.categoryRepository = categoryRepository;
     }
 
+    @RequestMapping(value = "", method = RequestMethod.GET)
+    public String allProducts(Model model) {
+        model.addAttribute("products", productRepository.findAll());
+        return "product";
+    }
+
     @RequestMapping(value = "create", method = RequestMethod.GET)
     public String createProductFrom(@RequestParam("categoryId") Long categoryId, Model model) {
         Category category = categoryRepository.findById(categoryId);
