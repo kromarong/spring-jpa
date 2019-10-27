@@ -3,54 +3,54 @@ package ru.geekbrains.persistence;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import ru.geekbrains.persistence.entity.Category;
-import ru.geekbrains.persistence.entity.Product;
+import ru.geekbrains.persistence.entity.Customer;
 
 import javax.persistence.EntityManager;
 import java.util.List;
 
 @Service
-public class ProductRepository {
+public class CustomerRepository {
 
     private final SessionFactory sessionFactory;
 
     @Autowired
-    public ProductRepository(SessionFactory sessionFactory) {
+    public CustomerRepository(SessionFactory sessionFactory) {
         this.sessionFactory = sessionFactory;
     }
 
-    public void create(Product product) {
+    public void create(Customer customer) {
         EntityManager em = sessionFactory.createEntityManager();
         em.getTransaction().begin();
 
-        em.persist(product);
+        em.persist(customer);
 
         em.getTransaction().commit();
         em.close();
     }
 
-    public void update(Product product) {
+    public void update(Customer customer) {
         EntityManager em = sessionFactory.createEntityManager();
         em.getTransaction().begin();
 
-        em.merge(product);
+        em.merge(customer);
 
         em.getTransaction().commit();
         em.close();
     }
 
-    public List<Product> findAll() {
+    public List<Customer> findAll() {
         EntityManager em = sessionFactory.createEntityManager();
 
-        List<Product> product = em.createQuery("from Product", Product.class).getResultList();
+        List<Customer> customers = em.createQuery("from Customer", Customer.class).getResultList();
         em.close();
-        return product;
+        return customers;
     }
 
-    public Product findById(Long id) {
+    public Customer findById(Long id) {
         EntityManager em = sessionFactory.createEntityManager();
-        Product product = em.find(Product.class, id);
+
+        Customer customer = em.find(Customer.class, id);
         em.close();
-        return product;
+        return customer;
     }
 }
